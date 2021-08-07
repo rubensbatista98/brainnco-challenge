@@ -7,10 +7,30 @@ import * as S from './styles';
 type SelectProps = React.HTMLAttributes<HTMLSelectElement>;
 
 function Select({ children, ...props }: SelectProps) {
+  const [isBooped, setIsBooped] = React.useState(false);
+
+  React.useEffect(() => {
+    if (!isBooped) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setIsBooped(false);
+    }, 150);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [isBooped]);
+
+  const trigger = () => {
+    setIsBooped(true);
+  };
+
   return (
-    <S.Wrapper>
+    <S.Wrapper onMouseEnter={trigger}>
       <S.Select {...props}>{children}</S.Select>
-      <ArrowDown aria-hidden={true} />
+      <ArrowDown className={isBooped ? 'boop' : ''} aria-hidden={true} />
     </S.Wrapper>
   );
 }
