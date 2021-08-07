@@ -36,6 +36,9 @@
     "prepare": "husky install"
   },
   "eslintConfig": {
+    "ignorePatterns": [
+      "src/assets"
+    ],
     "extends": [
       "react-app",
       "react-app/jest",
