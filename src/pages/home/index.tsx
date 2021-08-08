@@ -5,6 +5,8 @@ import { DrawInfo } from 'components/draw-info';
 import { WinningNumbers } from 'components/winning-numbers';
 import { Footer } from 'components/footer';
 
+import { formatDate } from 'utils/helpers';
+
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 
 import * as S from './styles';
@@ -79,7 +81,7 @@ function Home() {
           <span>{game}</span>
         </S.Title>
 
-        <DrawInfo id="4560" date="2021-04-20T00:28:09.426Z" />
+        <DrawInfo id="4560" date={formatDate('2021-04-20T00:28:09.426Z')} />
       </S.SideBar>
 
       <S.Body className={isLoading ? 'clipped' : undefined}>
