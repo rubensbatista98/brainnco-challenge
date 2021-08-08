@@ -8,7 +8,7 @@ function WinningNumbers({ numbers }: WinningNumbersProps) {
   return (
     <S.Wrapper aria-label="Números sorteados">
       {numbers.map((number) => (
-        <S.Number>{number}</S.Number>
+        <S.Number key={number}>{number}</S.Number>
       ))}
     </S.Wrapper>
   );
