@@ -61,9 +61,7 @@ function Home() {
       aria-labelledby="#game-title"
       style={{ '--bg-color': GAMES_COLORS[game] } as React.CSSProperties}
     >
-      <S.SideBar
-        style={{ '--opacity': isLoading ? 0 : 1 } as React.CSSProperties}
-      >
+      <S.SideBar hide={isLoading}>
         <Select
           aria-label="Escolha o jogo"
           id="games"
@@ -84,7 +82,7 @@ function Home() {
         <DrawInfo id="4560" date={formatDate('2021-04-20T00:28:09.426Z')} />
       </S.SideBar>
 
-      <S.Body className={isLoading ? 'clipped' : undefined}>
+      <S.Body hide={isLoading}>
         <WinningNumbers numbers={['06', '09', '28', '33', '37', '40']} />
         <Footer />
       </S.Body>

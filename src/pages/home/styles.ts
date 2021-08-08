@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 import { gapPrefix } from 'styles/utilities';
 
@@ -16,61 +16,63 @@ export const Wrapper = styled.main`
   }
 `;
 
-export const SideBar = styled.section`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
+export const SideBar = styled.section<{ hide: boolean }>`
+  ${({ hide }) => css`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 
-  color: #fff;
+    color: #fff;
 
-  padding: 4rem 1rem;
+    padding: 4rem 1rem;
 
-  opacity: var(--opacity, 1);
-  transition: calc(var(--transition-duration) + 50ms) ease-in-out;
+    pointer-events: ${hide ? 'none' : 'all'};
 
-  @media (min-width: 62rem) {
-    align-items: flex-start;
-    padding: 9rem 6rem;
-    padding-inline-end: 0;
-  }
+    opacity: ${hide ? '0' : '1'};
+    transition: opacity calc(var(--transition-duration) + 50ms) ease-in-out;
+
+    @media (min-width: 62rem) {
+      align-items: flex-start;
+      padding: 9rem 6rem;
+      padding-inline-end: 0;
+    }
+  `}
 `;
 
-export const Body = styled.section`
-  --clipped: circle(0% at 50% 100%);
+export const Body = styled.section<{ hide: boolean }>`
+  ${({ hide }) => css`
+    --clipped: circle(0% at 50% 100%);
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 
-  background-image: url(${CircleBg});
-  background-repeat: no-repeat;
-  background-position: center top;
-  background-size: 300vw 200vw;
+    background-image: url(${CircleBg});
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 300vw 200vw;
 
-  padding: 3rem 3rem 2rem;
+    padding: 3rem 3rem 2rem;
 
-  clip-path: circle(100%);
-  transition: clip-path var(--transition-duration) ease-in;
+    clip-path: ${hide ? 'var(--clipped)' : 'circle(100%)'};
+    transition: clip-path var(--transition-duration) ease-in;
 
-  &.clipped {
-    clip-path: var(--clipped);
-  }
+    ::before {
+      display: none;
+      content: url(${CircleBg});
+    }
 
-  ::before {
-    display: none;
-    content: url(${CircleBg});
-  }
+    @media (min-width: 62rem) {
+      --clipped: circle(0% at 100% 50%);
 
-  @media (min-width: 62rem) {
-    --clipped: circle(0% at 100% 50%);
+      background-position: left center;
+      background-size: 100vw 200vw;
 
-    background-position: left center;
-    background-size: 100vw 200vw;
-
-    padding-block-start: 0;
-    padding-block-end: 9rem;
-  }
+      padding-block-start: 0;
+      padding-block-end: 9rem;
+    }
+  `}
 `;
 
 export const Title = styled.h1`
