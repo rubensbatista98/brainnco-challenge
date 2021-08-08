@@ -6,6 +6,12 @@ export const Wrapper = styled.div`
 
   filter: drop-shadow(0px 3px 8px rgba(0, 0, 0, 0.031));
 
+  @media (prefers-reduced-motion: reduce) {
+    :hover {
+      filter: brightness(90%);
+    }
+  }
+
   > svg {
     position: absolute;
     top: 50%;
@@ -15,10 +21,12 @@ export const Wrapper = styled.div`
 
     pointer-events: none;
 
-    transition: transform 250ms cubic-bezier(0, -0.69, 1, 1.95);
+    @media (prefers-reduced-motion: no-preference) {
+      transition: transform 250ms cubic-bezier(0, -0.69, 1, 1.95);
 
-    &.boop {
-      transform: translateY(100%);
+      &.boop {
+        transform: translateY(100%);
+      }
     }
   }
 `;
