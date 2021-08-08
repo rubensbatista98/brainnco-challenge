@@ -5,9 +5,11 @@ import { gapPrefix } from 'styles/utilities';
 import CircleBg from 'assets/img/circle-bg.svg';
 
 export const Wrapper = styled.main`
+  --transition-duration: 250ms;
+
   min-height: 100vh;
   display: grid;
-  background-color: #6befa3;
+  background-color: var(--bg-color, hsl(205.8, 100%, 35.1%));
 
   @media (min-width: 62rem) {
     grid-template-columns: min(35%, 55rem) 1fr;
@@ -24,6 +26,9 @@ export const SideBar = styled.section`
 
   padding: 4rem 1rem;
 
+  opacity: var(--opacity, 1);
+  transition: calc(var(--transition-duration) + 50ms) ease-in-out;
+
   @media (min-width: 62rem) {
     align-items: flex-start;
     padding: 9rem 6rem;
@@ -32,6 +37,8 @@ export const SideBar = styled.section`
 `;
 
 export const Body = styled.section`
+  --clipped: circle(0% at 50% 100%);
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -43,12 +50,21 @@ export const Body = styled.section`
 
   padding: 3rem 3rem 2rem;
 
+  clip-path: circle(100%);
+  transition: clip-path var(--transition-duration) ease-in;
+
+  &.clipped {
+    clip-path: var(--clipped);
+  }
+
   ::before {
     display: none;
     content: url(${CircleBg});
   }
 
   @media (min-width: 62rem) {
+    --clipped: circle(0% at 100% 50%);
+
     background-position: left center;
     background-size: 100vw 200vw;
 
