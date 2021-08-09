@@ -59,6 +59,16 @@
       "yarn lint"
     ]
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "!<rootDir>/node_modules/",
+      "!<rootDir>/src/index.tsx",
+      "!<rootDir>/src/types/*",
+      "!<rootDir>/src/tests/**/*",
+      "!<rootDir>/src/styles/**/*",
+      "!**/*.d.ts"
+    ]
+  },
   "browserslist": {
     "production": [
       "> 1%"
