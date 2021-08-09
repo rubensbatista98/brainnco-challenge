@@ -11,7 +11,7 @@ import { ReactComponent as Logo } from 'assets/img/logo.svg';
 
 import * as S from './styles';
 
-const GAMES = [
+const LOTTERIES = [
   { id: '1', name: 'Mega-sena' },
   { id: '2', name: 'Quina' },
   { id: '3', name: 'Lotofácil' },
@@ -20,7 +20,7 @@ const GAMES = [
   { id: '6', name: 'Dia de sorte' }
 ];
 
-const GAMES_COLORS: Record<string, string> = {
+const LOTTERIES_COLORS: Record<string, string> = {
   'mega-sena': '#6BEFA3',
   quina: '#8666EF',
   lotofácil: '#DD7AC6',
@@ -30,12 +30,12 @@ const GAMES_COLORS: Record<string, string> = {
 };
 
 function Home() {
-  const [game, setGame] = React.useState('mega-sena');
+  const [lottery, setLottery] = React.useState('mega-sena');
   const [isLoading, setIsLoading] = React.useState(false);
 
   const timeId = React.useRef<NodeJS.Timeout | null>(null);
 
-  function handleGameChange(event: React.ChangeEvent<HTMLSelectElement>) {
+  function handleLotteryChange(event: React.ChangeEvent<HTMLSelectElement>) {
     if (timeId.current) {
       clearTimeout(timeId.current);
     }
@@ -43,40 +43,40 @@ function Home() {
     const { value } = event.currentTarget;
 
     timeId.current = setTimeout(() => {
-      const game = GAMES.find((game) => game.id === value);
+      const lottery = LOTTERIES.find((lottery) => lottery.id === value);
 
       setIsLoading(true);
 
       setTimeout(() => {
         setIsLoading(false);
-        setGame(game?.name.toLowerCase() ?? 'mega-sena');
+        setLottery(lottery?.name.toLowerCase() ?? 'mega-sena');
       }, 1000);
     }, 100);
   }
 
-  React.useEffect(() => {}, [game]);
+  React.useEffect(() => {}, [lottery]);
 
   return (
     <S.Wrapper
-      aria-labelledby="#game-title"
-      style={{ '--bg-color': GAMES_COLORS[game] } as React.CSSProperties}
+      aria-labelledby="#lottery-title"
+      style={{ '--bg-color': LOTTERIES_COLORS[lottery] } as React.CSSProperties}
     >
       <S.SideBar hide={isLoading}>
         <Select
-          aria-label="Escolha o jogo"
-          id="games"
-          onChange={handleGameChange}
+          title="Escolha a Loteria"
+          id="lotteries"
+          onChange={handleLotteryChange}
         >
-          {GAMES.map((game) => (
-            <option key={game.id} value={game.id}>
-              {game.name}
+          {LOTTERIES.map((lottery) => (
+            <option key={lottery.id} value={lottery.id}>
+              {lottery.name}
             </option>
           ))}
         </Select>
 
-        <S.Title id="game-title">
+        <S.Title id="lottery-title">
           <Logo aria-hidden={true} />
-          <span>{game}</span>
+          <span>{lottery}</span>
         </S.Title>
 
         <DrawInfo id="4560" date={formatDate('2021-04-20T00:28:09.426Z')} />
