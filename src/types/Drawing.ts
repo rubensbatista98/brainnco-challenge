@@ -1,8 +1,8 @@
-type Drawning = {
+type Drawing = {
   id: string;
   lottery: number;
   numbers: Array<string>;
   date: string;
 };
 
-export type { Drawning };
+export type { Drawing };

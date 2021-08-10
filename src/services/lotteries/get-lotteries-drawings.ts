@@ -1,8 +1,8 @@
 import { api } from './api';
 
-type LotteriesDrawnings = {
+type LotteriesDrawings = {
   lotteryId: number;
-  drawningId: string;
+  drawingId: string;
 };
 
 type ApiData = {
@@ -10,16 +10,16 @@ type ApiData = {
   concursoId: string;
 };
 
-async function getLotteriesDrawnings() {
+async function getLotteriesDrawings() {
   try {
     const data = await api<ApiData[]>('/loterias-concursos');
 
-    const lotteriesDrawnings: LotteriesDrawnings[] = data.map((ld) => ({
-      drawningId: ld.concursoId,
+    const lotteriesDrawings: LotteriesDrawings[] = data.map((ld) => ({
+      drawingId: ld.concursoId,
       lotteryId: ld.loteriaId
     }));
 
-    return lotteriesDrawnings;
+    return lotteriesDrawings;
   } catch (error) {
     return Promise.reject({
       message:
@@ -28,4 +28,4 @@ async function getLotteriesDrawnings() {
   }
 }
 
-export { getLotteriesDrawnings };
+export { getLotteriesDrawings };

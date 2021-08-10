@@ -1,10 +1,10 @@
 import { server, rest, lotteriesDB } from 'tests/server';
-import { Drawning } from 'types/Drawning';
+import { Drawing } from 'types/Drawing';
 
 import {
   getLotteries,
-  getLotteriesDrawnings,
-  getDrawningById
+  getLotteriesDrawings,
+  getDrawingById
 } from 'services/lotteries';
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -32,14 +32,14 @@ describe('Lotteries Service', () => {
     });
   });
 
-  describe('Get Lotteries Drawnings', () => {
-    test('should return all lotteries drawnings correctly', async () => {
-      const lotteriesDrawnings = await getLotteriesDrawnings();
+  describe('Get Lotteries Drawings', () => {
+    test('should return all lotteries drawings correctly', async () => {
+      const lotteriesDrawings = await getLotteriesDrawings();
 
-      expect(lotteriesDrawnings).toStrictEqual(
-        lotteriesDB.lotteriesDrawnings.map(({ concursoId, loteriaId }) => ({
+      expect(lotteriesDrawings).toStrictEqual(
+        lotteriesDB.lotteriesDrawings.map(({ concursoId, loteriaId }) => ({
           lotteryId: loteriaId,
-          drawningId: concursoId
+          drawingId: concursoId
         }))
       );
     });
@@ -52,23 +52,23 @@ describe('Lotteries Service', () => {
       );
 
       await expect(
-        getLotteriesDrawnings()
+        getLotteriesDrawings()
       ).rejects.toThrowErrorMatchingInlineSnapshot(
         `"Desculpa, tivemos um erro inesperado. Tente novamente mais tarde."`
       );
     });
   });
 
-  describe('Get Drawning by Id', () => {
-    test('should return drawning correctly', async () => {
-      const drawning = await getDrawningById('200');
+  describe('Get Drawing by Id', () => {
+    test('should return drawing correctly', async () => {
+      const drawing = await getDrawingById('200');
 
-      expect(drawning).toStrictEqual({
-        id: lotteriesDB.drawning.id,
-        lottery: lotteriesDB.drawning.loteria,
-        date: lotteriesDB.drawning.data,
-        numbers: lotteriesDB.drawning.numeros
-      } as Drawning);
+      expect(drawing).toStrictEqual({
+        id: lotteriesDB.drawing.id,
+        lottery: lotteriesDB.drawing.loteria,
+        date: lotteriesDB.drawing.data,
+        numbers: lotteriesDB.drawing.numeros
+      } as Drawing);
     });
 
     test('should reject with not found error message if get 404 response status', async () => {
@@ -81,7 +81,7 @@ describe('Lotteries Service', () => {
       );
 
       await expect(
-        getDrawningById(ID)
+        getDrawingById(ID)
       ).rejects.toThrowErrorMatchingInlineSnapshot(
         `"Não possui nenhum concurso para esta loteria no momento."`
       );
@@ -97,7 +97,7 @@ describe('Lotteries Service', () => {
       );
 
       await expect(
-        getDrawningById(ID)
+        getDrawingById(ID)
       ).rejects.toThrowErrorMatchingInlineSnapshot(
         `"Desculpa, tivemos um erro inesperado. Tente novamente mais tarde."`
       );

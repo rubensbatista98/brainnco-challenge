@@ -10,11 +10,11 @@ const handlers = [
   }),
 
   rest.get(`${API_URL}/loterias-concursos`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(lotteriesDB.lotteriesDrawnings));
+    return res(ctx.status(200), ctx.json(lotteriesDB.lotteriesDrawings));
   }),
 
   rest.get(`${API_URL}/concursos/:id`, (req, res, ctx) => {
-    return res(ctx.status(200), ctx.json(lotteriesDB.drawning));
+    return res(ctx.status(200), ctx.json(lotteriesDB.drawing));
   })
 ];
 

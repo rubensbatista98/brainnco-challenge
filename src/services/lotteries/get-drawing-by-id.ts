@@ -1,4 +1,4 @@
-import { Drawning } from 'types/Drawning';
+import { Drawing } from 'types/Drawing';
 
 import { api } from './api';
 
@@ -9,7 +9,7 @@ type ApiData = {
   data: string;
 };
 
-async function getDrawningById(id: string | number) {
+async function getDrawingById(id: string | number) {
   try {
     const data = await api<ApiData>(`/concursos/${id}`);
 
@@ -18,7 +18,7 @@ async function getDrawningById(id: string | number) {
       lottery: data.loteria,
       numbers: data.numeros,
       date: data.data
-    } as Drawning;
+    } as Drawing;
   } catch (error) {
     const message =
       error.status === 404
@@ -29,4 +29,4 @@ async function getDrawningById(id: string | number) {
   }
 }
 
-export { getDrawningById };
+export { getDrawingById };

@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-function buildLotteriesDrawning(overrides?: object) {
+function buildLotteriesDrawing(overrides?: object) {
   return {
     loteriaId: faker.datatype.number(),
     concursoId: faker.datatype.uuid(),
@@ -8,7 +8,7 @@ function buildLotteriesDrawning(overrides?: object) {
   };
 }
 
-function buildDrawning(overrides?: object) {
+function buildDrawing(overrides?: object) {
   return {
     id: faker.datatype.uuid(),
     loteria: faker.datatype.number(),
@@ -18,4 +18,4 @@ function buildDrawning(overrides?: object) {
   };
 }
 
-export { buildLotteriesDrawning, buildDrawning };
+export { buildLotteriesDrawing, buildDrawing };

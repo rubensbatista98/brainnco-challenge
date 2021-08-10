@@ -1,6 +1,6 @@
 import faker from 'faker';
 
-import { buildDrawning, buildLotteriesDrawning } from 'tests/factories';
+import { buildDrawing, buildLotteriesDrawing } from 'tests/factories';
 
 const LOTTERIES = [
   {
@@ -29,14 +29,14 @@ const LOTTERIES = [
   }
 ];
 
-const LOTTERIES_DRAWNINGS = LOTTERIES.map((lottery) =>
-  buildLotteriesDrawning({ loteriaId: lottery.id })
+const LOTTERIES_DRAWINGS = LOTTERIES.map((lottery) =>
+  buildLotteriesDrawing({ loteriaId: lottery.id })
 );
 
 const lotteriesDB = {
-  drawning: buildDrawning(),
+  drawing: buildDrawing(),
   lotteries: LOTTERIES,
-  lotteriesDrawnings: LOTTERIES_DRAWNINGS
+  lotteriesDrawings: LOTTERIES_DRAWINGS
 };
 
 export { lotteriesDB };
