@@ -1,10 +1,13 @@
-import type { Lottery } from 'types/Lottery';
-
 import { api } from './api';
 
 type ApiData = {
   id: number;
   nome: string;
+};
+
+type Lottery = {
+  id: number;
+  name: string;
 };
 
 async function getLotteries() {
@@ -25,4 +28,5 @@ async function getLotteries() {
   }
 }
 
+export type { Lottery };
 export { getLotteries };
