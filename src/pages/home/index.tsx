@@ -3,22 +3,19 @@ import React from 'react';
 import { Select } from 'components/select';
 import { DrawInfo } from 'components/draw-info';
 import { WinningNumbers } from 'components/winning-numbers';
+import { WelcomeScreen } from 'components/welcome-screen';
+import { ProgressBar } from 'components/progress-bar';
 import { Footer } from 'components/footer';
 
 import { formatDate } from 'utils/helpers';
+import { useLotteries } from 'utils/hooks';
+
+import type { Lottery } from 'utils/hooks';
+import type { Drawing } from 'types/Drawing';
 
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 
 import * as S from './styles';
-
-const LOTTERIES = [
-  { id: '1', name: 'Mega-sena' },
-  { id: '2', name: 'Quina' },
-  { id: '3', name: 'Lotofácil' },
-  { id: '4', name: 'Lotomania' },
-  { id: '5', name: 'Timemania' },
-  { id: '6', name: 'Dia de sorte' }
-];
 
 const LOTTERIES_COLORS: Record<string, string> = {
   'mega-sena': '#6BEFA3',
@@ -30,60 +27,87 @@ const LOTTERIES_COLORS: Record<string, string> = {
 };
 
 function Home() {
-  const [lottery, setLottery] = React.useState('mega-sena');
-  const [isLoading, setIsLoading] = React.useState(false);
+  const [lottery, setLottery] = React.useState<Lottery>();
+  const [drawing, setDrawing] = React.useState<Drawing>();
 
-  const timeId = React.useRef<NodeJS.Timeout | null>(null);
+  const { lotteries, getDrawingById, isLoading, isIdle } = useLotteries();
 
-  function handleLotteryChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    if (timeId.current) {
-      clearTimeout(timeId.current);
+  const lotteriesNames = React.useMemo(
+    () => (!!lotteries ? Object.keys(lotteries) : []),
+    [lotteries]
+  );
+
+  const initialLottery = lotteries?.[lotteriesNames[0]];
+  const bgColor = !!lottery ? LOTTERIES_COLORS[lottery.name] : null;
+
+  const isLoadingInitialData =
+    (!lotteries || !drawing) && (isLoading || isIdle);
+
+  async function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    if (!lotteries) {
+      return;
     }
 
     const { value } = event.currentTarget;
+    const lottery = lotteries[value];
 
-    timeId.current = setTimeout(() => {
-      const lottery = LOTTERIES.find((lottery) => lottery.id === value);
-
-      setIsLoading(true);
-
-      setTimeout(() => {
-        setIsLoading(false);
-        setLottery(lottery?.name.toLowerCase() ?? 'mega-sena');
-      }, 1000);
-    }, 100);
+    setLottery(lottery);
   }
 
-  React.useEffect(() => {}, [lottery]);
+  React.useEffect(() => {
+    if (initialLottery) {
+      setLottery(initialLottery);
+    }
+  }, [initialLottery]);
+
+  React.useEffect(() => {
+    if (!lottery) {
+      return;
+    }
+
+    getDrawingById(lottery.drawingId).then((drawing) => {
+      if (drawing) {
+        setDrawing(drawing);
+      }
+    });
+  }, [lottery, getDrawingById]);
+
+  if (isLoadingInitialData) {
+    return <WelcomeScreen />;
+  }
 
   return (
     <S.Wrapper
-      aria-labelledby="#lottery-title"
-      style={{ '--bg-color': LOTTERIES_COLORS[lottery] } as React.CSSProperties}
+      aria-labelledby="#lottery-name"
+      aria-busy={isLoading}
+      style={{ '--bg-color': bgColor } as React.CSSProperties}
     >
+      <ProgressBar isLoading={isLoading} />
+
       <S.SideBar hide={isLoading}>
         <Select
-          title="Escolha a Loteria"
+          aria-label="Escolha a Loteria"
           id="lotteries"
-          onChange={handleLotteryChange}
+          defaultValue={lottery?.name}
+          onChange={handleChange}
         >
-          {LOTTERIES.map((lottery) => (
-            <option key={lottery.id} value={lottery.id}>
-              {lottery.name}
+          {lotteriesNames.map((lotteryName) => (
+            <option key={lotteryName} value={lotteryName}>
+              {lotteryName}
             </option>
           ))}
         </Select>
 
-        <S.Title id="lottery-title">
+        <S.Title id="lottery-name">
           <Logo aria-hidden={true} />
-          <span>{lottery}</span>
+          <span>{lottery!.name}</span>
         </S.Title>
 
-        <DrawInfo id="4560" date={formatDate('2021-04-20T00:28:09.426Z')} />
+        <DrawInfo id={drawing!.id} date={formatDate(drawing!.date)} />
       </S.SideBar>
 
       <S.Body hide={isLoading}>
-        <WinningNumbers numbers={['06', '09', '28', '33', '37', '40']} />
+        <WinningNumbers numbers={drawing!.numbers} aria-live="assertive" />
         <Footer />
       </S.Body>
     </S.Wrapper>

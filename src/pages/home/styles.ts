@@ -1,5 +1,7 @@
 import styled, { css } from 'styled-components';
 
+import { Wrapper as ProgressBar } from 'components/progress-bar/styles';
+
 import { gapPrefix } from 'styles/utilities';
 
 import CircleBg from 'assets/img/circle-bg.svg';
@@ -9,7 +11,11 @@ export const Wrapper = styled.main`
 
   min-height: 100vh;
   display: grid;
-  background-color: var(--bg-color, hsl(205.8, 100%, 35.1%));
+  background-color: var(--bg-color, hsl(205, 100%, 35.1%));
+
+  > ${ProgressBar} {
+    z-index: 10;
+  }
 
   @media (min-width: 62rem) {
     grid-template-columns: min(35%, 55rem) 1fr;
@@ -22,6 +28,9 @@ export const SideBar = styled.section<{ hide: boolean }>`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    gap: 1rem;
+
+    ${gapPrefix(`1rem`)}
 
     color: #fff;
 
@@ -47,16 +56,25 @@ export const Body = styled.section<{ hide: boolean }>`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
+    gap: 2rem;
 
     background-image: url(${CircleBg});
     background-repeat: no-repeat;
     background-position: center top;
-    background-size: 300vw 200vw;
+    background-size: 600vw 400vw;
 
     padding: 3rem 3rem 2rem;
 
-    clip-path: ${hide ? 'var(--clipped)' : 'circle(100%)'};
-    transition: clip-path var(--transition-duration) ease-in;
+    @media (prefers-reduced-motion: no-preference) {
+      clip-path: ${hide ? 'var(--clipped)' : 'circle(100%)'};
+      transition: clip-path var(--transition-duration) ease-in;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      opacity: ${hide ? 0 : 1};
+      transition: opacity var(--transition-duration) ease;
+    }
 
     ::before {
       display: none;
@@ -69,8 +87,7 @@ export const Body = styled.section<{ hide: boolean }>`
       background-position: left center;
       background-size: 100vw 200vw;
 
-      padding-block-start: 0;
-      padding-block-end: 9rem;
+      padding: 9rem 5rem;
     }
   `}
 `;

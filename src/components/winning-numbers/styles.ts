@@ -14,10 +14,6 @@ export const Wrapper = styled.ul`
   margin: auto 0;
 
   ${gapPrefix(`1.2rem`)}
-
-  @media (min-width: 62rem) {
-    transform: translateY(50%);
-  }
 `;
 
 export const Number = styled.li`

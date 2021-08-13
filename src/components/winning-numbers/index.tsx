@@ -6,7 +6,7 @@ type WinningNumbersProps = {
 
 function WinningNumbers({ numbers }: WinningNumbersProps) {
   return (
-    <S.Wrapper title="Números sorteados">
+    <S.Wrapper aria-atomic={true} aria-live="polite" title="Números sorteados">
       {numbers.map((number) => (
         <S.Number key={number}>{number}</S.Number>
       ))}
