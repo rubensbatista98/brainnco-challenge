@@ -150,4 +150,35 @@ describe('Home Page', () => {
       screen.getByText(new RegExp(formatDate(DRAWING.data), 'i'))
     ).toBeInTheDocument();
   });
+
+  it('should render not found error message when does not have a drawing', async () => {
+    const ERROR_MESSAGE = 'No Drawing found';
+
+    render(<Home />);
+
+    await waitForLoadingToBeRemoved();
+
+    server.use(
+      rest.get(`${API_URL}/concursos/:id`, (_, res, ctx) => {
+        return res.once(ctx.status(404), ctx.json({ message: ERROR_MESSAGE }));
+      })
+    );
+
+    lotteriesDB.drawing.numeros.forEach((number) => {
+      expect(screen.getByText(String(number))).toBeInTheDocument();
+    });
+
+    userEvent.selectOptions(
+      screen.getByRole('combobox', { name: /escolha a loteria/i }),
+      screen.getByRole('option', {
+        name: lotteriesDB.lotteries[1].nome
+      })
+    );
+
+    expect(await screen.findByText(/nenhum concurso/gi)).toBeInTheDocument();
+
+    lotteriesDB.drawing.numeros.forEach((number) => {
+      expect(screen.queryByText(String(number))).not.toBeInTheDocument();
+    });
+  });
 });
