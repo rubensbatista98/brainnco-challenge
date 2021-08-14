@@ -40,6 +40,7 @@ function Home() {
   const initialLottery = lotteries?.[lotteriesNames[0]];
   const bgColor = !!lottery ? LOTTERIES_COLORS[lottery.name] : null;
 
+  const hasErrorOnInitialData = !lotteries && status.isError;
   const isLoadingInitialData =
     (!lotteries || (!drawing && !error)) && (status.isLoading || status.isIdle);
 
@@ -74,8 +75,8 @@ function Home() {
     });
   }, [lottery, getDrawingById]);
 
-  if (isLoadingInitialData) {
-    return <WelcomeScreen />;
+  if (isLoadingInitialData || hasErrorOnInitialData) {
+    return <WelcomeScreen hasError={hasErrorOnInitialData} message={error} />;
   }
 
   return (

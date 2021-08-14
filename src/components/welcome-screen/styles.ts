@@ -13,7 +13,7 @@ export const Wrapper = styled.section`
   display: grid;
   justify-items: center;
   align-content: start;
-  gap: 2.5rem;
+  gap: 5rem;
 
   color: #fff;
 
@@ -50,9 +50,16 @@ export const Spinner = styled.div`
   border-left-color: transparent;
   border-radius: 50%;
 
-  margin-block-start: 2rem;
-
   pointer-events: none;
 
   animation: ${spin} 1s ease-out infinite;
+`;
+
+export const Error = styled.div`
+  max-inline-size: 60ch;
+
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  color: hsl(34, 100%, 60%);
 `;
