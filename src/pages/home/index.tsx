@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { Select } from 'components/select';
 import { DrawInfo } from 'components/draw-info';
 import { WinningNumbers } from 'components/winning-numbers';
 import { WelcomeScreen } from 'components/welcome-screen';
@@ -15,6 +14,7 @@ import type { Drawing } from 'types/Drawing';
 
 import { ReactComponent as Logo } from 'assets/img/logo.svg';
 
+import { SelectLottery } from './components/select-lottery';
 import * as S from './styles';
 
 const LOTTERIES_COLORS: Record<string, string> = {
@@ -44,15 +44,10 @@ function Home() {
   const isLoadingInitialData =
     (!lotteries || (!drawing && !error)) && (status.isLoading || status.isIdle);
 
-  async function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
-    if (!lotteries) {
-      return;
+  function handleChange(lotteryName: string) {
+    if (lotteries) {
+      setLottery(lotteries[lotteryName]);
     }
-
-    const { value } = event.currentTarget;
-    const lottery = lotteries[value];
-
-    setLottery(lottery);
   }
 
   React.useEffect(() => {
@@ -88,18 +83,11 @@ function Home() {
       <ProgressBar isLoading={status.isLoading} />
 
       <S.SideBar hide={status.isLoading}>
-        <Select
-          aria-label="Escolha a Loteria"
-          id="lotteries"
+        <SelectLottery
+          options={lotteriesNames}
           defaultValue={lottery?.name}
           onChange={handleChange}
-        >
-          {lotteriesNames.map((lotteryName) => (
-            <option key={lotteryName} value={lotteryName}>
-              {lotteryName}
-            </option>
-          ))}
-        </Select>
+        />
 
         <S.Title id="lottery-name">
           <Logo aria-hidden={true} />
