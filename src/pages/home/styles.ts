@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { Wrapper as ProgressBar } from 'components/progress-bar/styles';
+import { Wrapper as WinningNumbers } from 'components/winning-numbers/styles';
 
 import { gapPrefix } from 'styles/utilities';
 
@@ -11,7 +12,7 @@ export const Wrapper = styled.main`
 
   min-height: 100vh;
   display: grid;
-  background-color: var(--bg-color, hsl(205, 100%, 35.1%));
+  background-color: var(--bg-color, hsl(205, 100%, 35%));
 
   > ${ProgressBar} {
     z-index: 10;
@@ -26,7 +27,6 @@ export const SideBar = styled.section<{ hide: boolean }>`
   ${({ hide }) => css`
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
     gap: 1rem;
 
@@ -40,6 +40,10 @@ export const SideBar = styled.section<{ hide: boolean }>`
 
     opacity: ${hide ? '0' : '1'};
     transition: opacity calc(var(--transition-duration) + 50ms) ease-in-out;
+
+    > ${Title} {
+      margin: auto 0;
+    }
 
     @media (min-width: 62rem) {
       align-items: flex-start;
@@ -66,6 +70,15 @@ export const Body = styled.section<{ hide: boolean }>`
 
     padding: 3rem 3rem 2rem;
 
+    ::before {
+      display: none;
+      content: url(${CircleBg});
+    }
+
+    > :is(${WinningNumbers}, ${Error}) {
+      margin: auto 0;
+    }
+
     @media (prefers-reduced-motion: no-preference) {
       clip-path: ${hide ? 'var(--clipped)' : 'circle(100%)'};
       transition: clip-path var(--transition-duration) ease-in;
@@ -74,11 +87,6 @@ export const Body = styled.section<{ hide: boolean }>`
     @media (prefers-reduced-motion: reduce) {
       opacity: ${hide ? 0 : 1};
       transition: opacity var(--transition-duration) ease;
-    }
-
-    ::before {
-      display: none;
-      content: url(${CircleBg});
     }
 
     @media (min-width: 62rem) {
@@ -109,4 +117,10 @@ export const Title = styled.h1`
 
     ${gapPrefix(`1rem`)}
   }
+`;
+
+export const Error = styled.div`
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
 `;

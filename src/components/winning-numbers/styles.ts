@@ -10,9 +10,6 @@ export const Wrapper = styled.ul`
   justify-content: center;
   gap: 2.5rem;
 
-  align-self: center;
-  margin: auto 0;
-
   ${gapPrefix(`1.2rem`)}
 `;
 

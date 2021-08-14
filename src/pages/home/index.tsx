@@ -30,7 +30,7 @@ function Home() {
   const [lottery, setLottery] = React.useState<Lottery>();
   const [drawing, setDrawing] = React.useState<Drawing>();
 
-  const { lotteries, getDrawingById, isLoading, isIdle } = useLotteries();
+  const { lotteries, getDrawingById, error, ...status } = useLotteries();
 
   const lotteriesNames = React.useMemo(
     () => (!!lotteries ? Object.keys(lotteries) : []),
@@ -41,7 +41,7 @@ function Home() {
   const bgColor = !!lottery ? LOTTERIES_COLORS[lottery.name] : null;
 
   const isLoadingInitialData =
-    (!lotteries || !drawing) && (isLoading || isIdle);
+    (!lotteries || (!drawing && !error)) && (status.isLoading || status.isIdle);
 
   async function handleChange(event: React.ChangeEvent<HTMLSelectElement>) {
     if (!lotteries) {
@@ -68,6 +68,8 @@ function Home() {
     getDrawingById(lottery.drawingId).then((drawing) => {
       if (drawing) {
         setDrawing(drawing);
+      } else {
+        setDrawing(undefined);
       }
     });
   }, [lottery, getDrawingById]);
@@ -79,12 +81,12 @@ function Home() {
   return (
     <S.Wrapper
       aria-labelledby="#lottery-name"
-      aria-busy={isLoading}
+      aria-busy={status.isLoading}
       style={{ '--bg-color': bgColor } as React.CSSProperties}
     >
-      <ProgressBar isLoading={isLoading} />
+      <ProgressBar isLoading={status.isLoading} />
 
-      <S.SideBar hide={isLoading}>
+      <S.SideBar hide={status.isLoading}>
         <Select
           aria-label="Escolha a Loteria"
           id="lotteries"
@@ -103,11 +105,18 @@ function Home() {
           <span>{lottery!.name}</span>
         </S.Title>
 
-        <DrawInfo id={drawing!.id} date={formatDate(drawing!.date)} />
+        {!!drawing ? (
+          <DrawInfo id={drawing.id} date={formatDate(drawing.date)} />
+        ) : null}
       </S.SideBar>
 
-      <S.Body hide={isLoading}>
-        <WinningNumbers numbers={drawing!.numbers} aria-live="assertive" />
+      <S.Body hide={status.isLoading}>
+        {!!drawing ? (
+          <WinningNumbers numbers={drawing.numbers} aria-live="assertive" />
+        ) : (
+          <S.Error aria-live="assertive">{error}</S.Error>
+        )}
+
         <Footer />
       </S.Body>
     </S.Wrapper>
