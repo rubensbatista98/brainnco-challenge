@@ -181,4 +181,19 @@ describe('Home Page', () => {
       expect(screen.queryByText(String(number))).not.toBeInTheDocument();
     });
   });
+
+  it('should render unexpected error message when has an error on initial load', async () => {
+    server.use(
+      rest.get(`${API_URL}/loterias`, (_, res) => {
+        return res.networkError('error message');
+      })
+    );
+
+    render(<Home />);
+
+    expect(screen.getByLabelText(/carregando/i)).toBeInTheDocument();
+    await waitForLoadingToBeRemoved();
+
+    expect(await screen.findByText(/erro inesperado/gi)).toBeInTheDocument();
+  });
 });
